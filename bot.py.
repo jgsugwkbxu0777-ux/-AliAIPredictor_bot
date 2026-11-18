@@ -42,12 +42,41 @@ async def probability(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "الاحتمال = عدد النتائج المطلوبة ÷ "
         "مجموع النتائج الممكنة.\n\n"
         "النتائج العشوائية لا يمكن ضمانها."
-    )
+  observations = []
+async def add_sample(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not context.args:
+        await update.message.reply_text("اكتب: /addsample 1.44")
+        return
+    try:
+        value = float(context.args[0])
+        if value <= 0:
+            raise ValueError
+        observations.append(value)
+        await update.message.reply_text("تم تسجيل القيمة بنجاح")
+    except ValueError:
+        await update.message.reply_text("أدخل رقماً موجباً صحيحاً")
+
+async def summary(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not observations:
+        await update.message.reply_text("لا توجد بيانات مسجلة")
+        return
+
+    total = len(observations)
+    average = sum(observations) / total
+
+    await update.message.reply_text(
+        f"📊 الإحصائيات\n"
+        f"عدد القيم: {total}\n"
+        f"المتوسط: {average:.2f}\n"
+        f"أعلى قيمة: {max(observations):.2f}\n"
+        f"أقل قيمة: {min(observations):.2f}"
+    )  )
 
 def main():
     if not TOKEN:
         raise ValueError("BOT_TOKEN is missing")
-
+app.add_handler(CommandHandler("addsample", add_sample))
+app.add_handler(CommandHandler("summary", summary))
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
