@@ -6,10 +6,7 @@ from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     ContextTypes
-)
-
 logging.basicConfig(level=logging.INFO)
-
 TOKEN = os.getenv("BOT_TOKEN")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -27,15 +24,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 📊 تحليل إحصائي تعليمي
 🌐 واجهة عربية
 """
-
     await update.message.reply_text(message)
-
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "هذا البوت يشرح الإحصائيات والاحتمالات "
         "ولا يستطيع معرفة النتائج العشوائية مسبقاً."
-    )
-
 async def probability(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📊 الاحتمالات:\n\n"
@@ -55,15 +48,12 @@ async def add_sample(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("تم تسجيل القيمة بنجاح")
     except ValueError:
         await update.message.reply_text("أدخل رقماً موجباً صحيحاً")
-
 async def summary(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not observations:
         await update.message.reply_text("لا توجد بيانات مسجلة")
         return
-
     total = len(observations)
     average = sum(observations) / total
-
     await update.message.reply_text(
         f"📊 الإحصائيات\n"
         f"عدد القيم: {total}\n"
@@ -71,18 +61,15 @@ async def summary(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"أعلى قيمة: {max(observations):.2f}\n"
         f"أقل قيمة: {min(observations):.2f}"
     )  )
-
 def main():
-    if not TOKEN:
+    if not TOKE
         raise ValueError("BOT_TOKEN is missing")
 app.add_handler(CommandHandler("addsample", add_sample))
 app.add_handler(CommandHandler("summary", summary))
     app = ApplicationBuilder().token(TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("probability", probability))
-
     print("ALI AI PREDICTOR is running...")
     app.run_polling()
 
